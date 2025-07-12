@@ -1,0 +1,22 @@
+RECORDS = {
+    "13": "C418 - 13",
+    "cat": "C418 - cat",
+    "blocks": "C418 - blocks",
+    "chirp": "C418 - chirp",
+    "far": "C418 - far",
+    "mall": "C418 - mall",
+    "mellohi": "C418 - mellohi",
+    "stal": "C418 - stal",
+    "strad": "C418 - strad",
+    "ward": "C418 - ward",
+    "11": "C418 - 11",
+    "creator_music_box": "Lena Raine - Creator (オルゴール)",
+    "wait": "C418 - wait",
+    "creator": "Lena Raine - Creator",
+    "precipice": "Aaron Cherof - Precipice",
+    "otherside": "Lena Raine - otherside",
+    "pigstep": "Lena Raine - pigstep",
+    "5": "Samuel Åberg - 5",
+    "relic": "Aaron Cherof - Relic",
+}
+VOLUME = 0.1

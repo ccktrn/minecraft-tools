@@ -1,0 +1,162 @@
+{
+	"music_disc.13": {
+		"replace": true,
+		"sounds": [
+			{
+				"name": "records/13",
+				"volume": 0.1,
+				"stream": true
+			}
+		]
+	},
+	"music_disc.cat": {
+		"replace": true,
+		"sounds": [
+			{
+				"name": "records/cat",
+				"volume": 0.1,
+				"stream": true
+			}
+		]
+	},
+	"music_disc.blocks": {
+		"replace": true,
+		"sounds": [
+			{
+				"name": "records/blocks",
+				"volume": 0.1,
+				"stream": true
+			}
+		]
+	},
+	"music_disc.chirp": {
+		"replace": true,
+		"sounds": [
+			{
+				"name": "records/chirp",
+				"volume": 0.1,
+				"stream": true
+			}
+		]
+	},
+	"music_disc.far": {
+		"replace": true,
+		"sounds": [
+			{
+				"name": "records/far",
+				"volume": 0.1,
+				"stream": true
+			}
+		]
+	},
+	"music_disc.mall": {
+		"replace": true,
+		"sounds": [
+			{
+				"name": "records/mall",
+				"volume": 0.1,
+				"stream": true
+			}
+		]
+	},
+	"music_disc.mellohi": {
+		"replace": true,
+		"sounds": [
+			{
+				"name": "records/mellohi",
+				"volume": 0.1,
+				"stream": true
+			}
+		]
+	},
+	"music_disc.stal": {
+		"replace": true,
+		"sounds": [
+			{
+				"name": "records/stal",
+				"volume": 0.1,
+				"stream": true
+			}
+		]
+	},
+	"music_disc.strad": {
+		"replace": true,
+		"sounds": [
+			{
+				"name": "records/strad",
+				"volume": 0.1,
+				"stream": true
+			}
+		]
+	},
+	"music_disc.ward": {
+		"replace": true,
+		"sounds": [
+			{
+				"name": "records/ward",
+				"volume": 0.1,
+				"stream": true
+			}
+		]
+	},
+	"music_disc.11": {
+		"replace": true,
+		"sounds": [
+			{
+				"name": "records/11",
+				"volume": 0.1,
+				"stream": true
+			}
+		]
+	},
+	"music_disc.wait": {
+		"replace": true,
+		"sounds": [
+			{
+				"name": "records/wait",
+				"volume": 0.1,
+				"stream": true
+			}
+		]
+	},
+	"music_disc.otherside": {
+		"replace": true,
+		"sounds": [
+			{
+				"name": "records/otherside",
+				"volume": 0.1,
+				"stream": true
+			}
+		]
+	},
+	"music_disc.pigstep": {
+		"replace": true,
+		"sounds": [
+			{
+				"name": "records/pigstep",
+				"volume": 0.1,
+				"stream": true
+			}
+		]
+	},
+	"music_disc.5": {
+		"replace": true,
+		"sounds": [
+			{
+				"name": "records/5",
+				"volume": 0.1,
+				"stream": true
+			}
+		]
+	},
+	"music_disc.relic": {
+		"replace": true,
+		"sounds": [
+			{
+				"name": "records/relic",
+				"volume": 0.1,
+				"stream": true
+			}
+		]
+	}
+}

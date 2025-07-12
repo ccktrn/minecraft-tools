@@ -1,0 +1,73 @@
+PAINTINGS = {
+    "1x1":{
+        "kebab": "Kebab med tre pepperoni",
+        "aztec": "de_aztec",
+        "alban": "Albanian",
+        "aztec2": "de_aztec",
+        "bomb": "Target Successfully Bombed",
+        "plant": "Paradisträd",
+        "wasteland": "Wasteland",
+        "meditative": "Meditative",
+    },
+    "1x2":{
+        "wanderer": "Wanderer",
+        "graham": "Graham",
+        "prairie_ride": "Prairie Ride",
+    },
+    "2x1":{
+        "pool": "The Pool",
+        "courbet": "Bonjour Monsieur Courbet",
+        "sea": "Seaside",
+        "sunset": "sunset_dense",
+        "creebet": "Creebet",
+    },
+    "2x2":{
+        "match": "Match",
+        "bust": "Bust",
+        "stage": "The Stage Is Set",
+        "void": "The void",
+        "skull_and_roses": "Skull and Roses",
+        "wither": "Wither",
+        "baroque": "Baroque",
+        "humble": "Humble",
+    },
+    "3x3":{
+        "bouquet": "Bouquet", 
+        "cavebird": "cavebird",
+        "cotan": "Cotán",
+        "fern": "Fern",
+        "owlemons": "Owlemons",
+        "tides": "Tides",
+        "sunflowers": "Sunflowers",
+        "endboss": "Endboss",
+
+    },
+    "3x4":{
+        "backyard": "Backyard", 
+        "pond": "Pond", 
+    },
+    "4x2":{
+        "fighters": "Fighters",
+        "changing": "Changing",
+        "finding": "Finding",
+        "lowmist": "Lowmist",
+        "passage": "Passage",
+    },
+    "4x3":{
+        "skeleton": "Mortal Coil",
+        "donkey_kong": "Kong",
+    },
+    "4x4":{
+        "pointer": "Pointer",
+        "pigscene": "Pigscene",
+        "burning_skull": "Skull On Fire",
+        "unpacked": "Unpacked",
+        "orb": "Orb",
+    }, 
+    "dev-2x2":{
+        "earth": "Earth",
+        "wind": "Wind",
+        "water": "Water",
+        "fire": "Fire",
+    }, 
+}

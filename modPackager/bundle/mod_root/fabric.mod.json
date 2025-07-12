@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "id": "basic-pack",
+  "name": "BasicPack",
+  "version": "0.1.1-1.21.0",
+  "environment": "*",
+  "license": "None",
+  "icon": "icon.png",
+  "authors": [
+    "me"
+  ],
+  "depends": {
+    "minecraft": ">=1.21-",
+    "fabricloader": ">=0.15.11"
+  },
+  "description": "Basic optimizer mods, for fabric 1.21.0",
+  "jars": [
+    {
+      "file": "jars/continuity-3.0.0-beta.5+1.21.jar"
+    },
+    {
+      "file": "jars/fabric-api-0.100.7+1.21.jar"
+    },
+    {
+      "file": "jars/ferritecore-7.0.0-fabric.jar"
+    },
+    {
+      "file": "jars/FpsReducer2-fabric-1.21-2.9.jar"
+    },
+    {
+      "file": "jars/ImmediatelyFast-Fabric-1.2.18+1.21.jar"
+    },
+    {
+      "file": "jars/indium-1.0.34+mc1.21.jar"
+    },
+    {
+      "file": "jars/iris-1.7.3+mc1.21.jar"
+    },
+    {
+      "file": "jars/krypton-0.2.8.jar"
+    },
+    {
+      "file": "jars/lithium-fabric-mc1.21-0.12.7.jar"
+    },
+    {
+      "file": "jars/modmenu-11.0.1.jar"
+    },
+    {
+      "file": "jars/reeses_sodium_options-1.7.3+mc1.21.jar"
+    },
+    {
+      "file": "jars/sodium-extra-0.5.7+mc1.21.jar"
+    },
+    {
+      "file": "jars/sodium-fabric-0.5.11+mc1.21.jar"
+    }
+  ]
+}
