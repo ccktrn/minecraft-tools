@@ -1,58 +1,55 @@
 
-import sys
+
+import sys, os
 from pathlib import Path
-import time
 import cv2
 import numpy as np
+import zipfile
 
-#置換する色の指定  [ before[r,g,b, a], after[r,g,b, a] ]   
-color_pair_list=[
-            [[198,198,198,255],[79,79,79,255]],
-            [[139,139,139,255],[56,56,56,255]],
-            [[255,255,255,255],[102,102,102,255]],
-            [[55,55,55,255],[22,22,22,255]]
-          ]
-
-#関数定義 
-def color_replace(img, color_beforeafter_list,  useAlpha:bool = True):
-    dst = img.copy()
-    if len(img.shape)==2 : # gray
-        for cb,ca in color_beforeafter_list :
-            bb,ba = sum(cb[:2])/3 * cb[3]/255, sum(ca[:2])/3 * ca[3]/255
-            dst[np.where((img == bb).all(axis=2))] = ba
-    
-    else: # color
-        for cb,ca in color_beforeafter_list :
-            if (useAlpha and img.shape[2]==4) :
-                dst[np.where((img == cb[:4]).all(axis=2))] = ca[:4]
-            else :
-                dst[np.where((img == cb[:3]).all(axis=2))] = ca[:3]
-    
-    return dst
-
-
-def find_all_img_path(root_path:list[str]) :
-    res = []
-    for path in root_path:
-        paths = Path(root_path).glob("**/*.png")
-        res.extend([ str(p.absolute()) for p in paths])
-    return res
-
+import module.consts as consts
+import module.libs as libs
 
 
 #---main-----
 def main ():
-    if len(sys.argv) > 1:
-        filename_list = find_all_img_path(sys.argv[1:])  
-        for filename in filename_list:
-            # 元画像取得
-            img = cv2.imread(filename,cv2.IMREAD_UNCHANGED)
-            img = color_replace(img, color_pair_list)
-            # 画像ファイルとして出力
-            cv2.imwrite(filename,img)
+    if len(sys.argv) <= 1:
+        print("Usage:")
+        print("\t> main.py <mc_version> [<output_zip_path> <.minecraft_dir_path>]")
+        print("Args:")
+        print("\t<mc_version>: Minecraft version (e.g., 1.20.1)")
+        print("\t<output_zip_path>: Path to the output zip file (default: <current directory>/darkmodeUI_<mc_version>.zip)")
+        print("\t<.minecraft_dir_path>: Path to the .minecraft directory (default: %APPDATA%\\.minecraft)")
+        print("Example:")
+        print("\t main.py 1.20.2 dist/MyPack.zip")
+        return
+    mc_ver = sys.argv[1]
+    pack_path = libs.get_pack_path(mc_ver, sys.argv[2] if len(sys.argv) > 2 else None)
+    jar_path = libs.get_jar_path(mc_ver, sys.argv[3] if len(sys.argv) > 3 else libs.get_default_mc_dir())
+    with zipfile.ZipFile(pack_path, "w") as dst_zip: # 出力先のzipファイルを開く
+        with zipfile.ZipFile(jar_path, "r") as src_zip: # Minecraftのjarファイルを開く
+            # pack.mcmeta, pack.pngの追加
+            dst_zip.writestr("pack.mcmeta", libs.get_pack_meta(src_zip))
+            dst_zip.writestr("pack.png", src_zip.read("pack.png")) # デフォルトのpack.pngをコピー
 
-    else:
-        print("no arguments!")
+            # テクスチャの置換, 追加
+            img_on_zip_list = libs.get_png_path_list(src_zip)
+            num_images = len(img_on_zip_list)
+            num_skipped, num_success = 0, 0
+            for img_path in img_on_zip_list:
+                # 元画像取得
+                with src_zip.open(img_path, "r") as img_file:
+                    img = cv2.imdecode(np.frombuffer(img_file.read(), np.uint8), cv2.IMREAD_UNCHANGED)
+                    if img is None:
+                        print(f"Failed to decode image {img_path}. Skipping...")
+                        num_skipped += 1
+                        continue
+                    img = libs.color_replace(img, consts.COLOR_PAIR_LIST)
+                    # 画像ファイルとして出力
+                    dst_zip.writestr(img_path, cv2.imencode('.png', img)[1].tobytes())
+                    num_success += 1
+            print(f"Processed {num_images} images: {num_success} succeeded, {num_skipped} failed.")
+            print(f"Output zip file created at: {pack_path}")
+
 
 
 if __name__ == "__main__":
