@@ -5,6 +5,7 @@ import cv2
 import numpy as np
 import zipfile
 import json
+import fnmatch
 import module.consts as consts
 
 
@@ -57,13 +58,14 @@ def get_jar_path(version: str, mc_path: str) -> Path:
     return jar_path
 
 def get_png_path_list(zip_file : zipfile.ZipFile):
-    res: list[str] = []
-    for asset_path in consts.ASSET_PATH_LIST:
-        # asset_pathよりも下の階層にあるpngファイルのパスをすべてに抽出
-        png_files = [str(p.filename) for p in zip_file.filelist if p.filename.startswith(asset_path) and p.filename.endswith(".png")]
-        res.extend(png_files)
-    return res
+    # asset_pathよりも下の階層にあるpngファイルのパスをすべてに抽出
+    png_files = [str(p.filename) for p in zip_file.filelist if _is_match_path(p.filename, consts.ASSET_PATH_LIST)]
+    return png_files
 
+def _is_match_path(path: str, patterns: list[str]) -> bool:
+    for pattern in patterns:
+        if fnmatch.fnmatch(path, pattern): return True
+    return False
 
 # 一枚の画像に対して色置換を行った画像データを返す関数
 def color_replace(img : cv2.Mat | np.ndarray, color_beforeafter_list: list[list[list[int]]],  useAlpha:bool = True) -> cv2.Mat | np.ndarray: 
