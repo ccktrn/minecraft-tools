@@ -5,7 +5,7 @@ import cv2
 import numpy as np
 import zipfile
 import json
-import fnmatch
+import re
 import module.consts as consts
 
 
@@ -64,8 +64,25 @@ def get_png_path_list(zip_file : zipfile.ZipFile):
 
 def _is_match_path(path: str, patterns: list[str]) -> bool:
     for pattern in patterns:
-        if fnmatch.fnmatch(path, pattern): return True
+        regex = _convert_shellpattern_to_regex(pattern)
+        if re.match(regex, path): return True
     return False
+
+def _convert_shellpattern_to_regex(pattern: str) -> str:
+    """
+    Convert a shell-style wildcard pattern to a regular expression.
+    * is matched to any string without '/', 
+    ** is matched to any string that can include '/', 
+    ? is matched to any single character, 
+    [...] and [^...] are same, no convert.
+    """
+    # minecraftのパスなので＠(全角)がないこと前提
+    pattern = pattern.replace('*', '＠') # いったん置き換え
+    pattern = pattern.replace('.', r'\.') # Escape dots
+    pattern = pattern.replace('?', '.') 
+    pattern = pattern.replace('/＠＠', '(/.*)?') # 
+    pattern = pattern.replace('＠', '[^/]*') #
+    return f'^{pattern}$'
 
 # 一枚の画像に対して色置換を行った画像データを返す関数
 def color_replace(img : cv2.Mat | np.ndarray, color_beforeafter_list: list[list[list[int]]],  useAlpha:bool = True) -> cv2.Mat | np.ndarray: 
