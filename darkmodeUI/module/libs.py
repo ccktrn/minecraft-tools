@@ -43,9 +43,9 @@ def create_pack_png (src: bytes) -> bytes:
     img = cv2.resize(img, (size, size), interpolation=cv2.INTER_AREA)
     # が層の明るさ2/5ver
     img_dark = cv2.convertScaleAbs(img, alpha=(2/5), beta=0)
-    # 右下半分のマスク
+    # 左下のマスク
     mask = np.zeros((size, size), dtype=np.uint8)
-    tril_indices = np.tril_indices(size, k=-1)
+    tril_indices = np.tril_indices(size, k=size//4)
     mask[tril_indices] = 255
     # 2つをマスクを使って合成
     result = np.where(mask[:, :, np.newaxis] == 255, img_dark, img)

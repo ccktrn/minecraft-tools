@@ -4,6 +4,9 @@ import os
 import generate 
 from enum import Enum
 
+import module.consts as consts
+import module.libs as libs
+
 
 class PickerMode(Enum):
     OUT = 0
@@ -39,11 +42,11 @@ def main(page: ft.Page):
     # buttons
     def on_click_mcdir_pick(e):
         pickerstate["mode"] = PickerMode.MCDIR
-        picker.get_directory_path()
+        picker.get_directory_path(initial_directory=pagestate["mcdir"] if pagestate["mcdir"] else libs.get_default_mc_dir())
         # page.update()
     def on_click_generate(e): 
         pickerstate["mode"] = PickerMode.OUT
-        picker.save_file(file_type=ft.FilePickerFileType.CUSTOM, allowed_extensions=["zip"])
+        picker.save_file(file_type=ft.FilePickerFileType.CUSTOM, file_name=consts.DEFAULT_PACK_NAME % pagestate["version"], allowed_extensions=["zip"])
     def on_click_cancel(e): 
         page.window.close()
 
