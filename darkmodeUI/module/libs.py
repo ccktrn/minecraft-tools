@@ -26,7 +26,7 @@ def get_pack_path(version: str, output: str | None) -> Path:
             # If output is a zip file, use it directly
             return p_out.resolve()
         else:
-            # If output is a file without .zip extension, treat it as a directory and create the zip file there
+            # If output is a file without .zip extension, treat it as a basename and create the zip file there
              return p_out.with_suffix(".zip").resolve()
     else:
         # If no output directory is specified, use the current working directory
@@ -85,21 +85,19 @@ def _convert_shellpattern_to_regex(pattern: str) -> str:
     return f'^{pattern}$'
 
 # 一枚の画像に対して色置換を行った画像データを返す関数
-def color_replace(img : cv2.Mat | np.ndarray, color_beforeafter_list: list[list[list[int]]],  useAlpha:bool = True) -> cv2.Mat | np.ndarray: 
+def color_replace(img : cv2.Mat | np.ndarray) -> cv2.Mat | np.ndarray: 
     dst = img.copy()
-    if len(img.shape)==2 : # if grayscale
-        for cb,ca in color_beforeafter_list :
-            bb,ba = _brightness(cb[:3]), _brightness(ca[:3])
-            dst[np.where((img == bb))] = ba
-    else: # color
-        for cb,ca in color_beforeafter_list :
-            if (useAlpha and img.shape[2]==4) :
-                dst[np.where((img == cb[:4]).all(axis=2))] = ca[:4]
-            else :
-                dst[np.where((img == cb[:3]).all(axis=2))] = ca[:3]
+    # 要素の第２軸(各ピクセル)に対してconst.REPLACE_***_FUNCを適用
+    if len(img.shape)==2 : # GrayScale image
+        dst = consts.REPLACE_GRAY_FUNC(dst)
+    elif img.shape[2] == 3:# RGB image
+        dst = np.apply_along_axis(consts.REPLACE_RGB_FUNC, 2, dst)
+    elif img.shape[2] == 4:# RGBA image
+        dst = np.apply_along_axis(consts.REPLACE_RGBA_FUNC, 2, dst)
     return dst
 
 
-def _brightness(rgb: list[int]) -> float:
+def _brightness(rgb: list[int]) -> int: 
     r, g, b = rgb
-    return (r * 299 + g * 587 + b * 114) / 1000
+    return (r * 299 + g * 587 + b * 114) // 1000
+

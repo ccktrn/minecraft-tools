@@ -63,10 +63,16 @@ def main(page: ft.Page):
             if not pagestate["mcdir"].strip() == "":
                 arg.append(pagestate["mcdir"]) 
             print(f"Generating with args: {arg}")
+            # loading open
+            dialog.open = True  # ダイアログを開く
+            dialog.title = None  # ダイアログのタイトル
+            dialog.content = ft.Row([ ft.ProgressRing(), ft.Text("Generating...")], alignment=ft.MainAxisAlignment.SPACE_AROUND)  # 結果をダイアログに表示
+            dialog.actions = None  # ボタンはなし
+            dialog.update()
             res = generate.generate(arg)  # 引数を渡して生成
             dialog.title = "Result: successed" if res[0] else "Result: failed"  # ダイアログのタイトル
             dialog.content = ft.Text(res[1])  # 結果をダイアログに表示
-            dialog.open = True  # ダイアログを開く
+            dialog.actions = [ft.TextButton("OK", on_click=_on_click_dialogOK)]  # OKボタンを追加
             dialog.update()
 
         elif e.control.data["mode"] == PickerMode.MCDIR:
@@ -83,11 +89,7 @@ def main(page: ft.Page):
     button_generate = ft.ElevatedButton("Generate!", on_click=on_click_generate, disabled=True)
     ### overlays
     picker = ft.FilePicker(on_result=on_picker_result, data=pickerstate)
-    dialog = ft.AlertDialog(
-        title="result", 
-        content=ft.Text(""),  # 初期は空のテキスト
-        actions=[ft.TextButton("OK", on_click=_on_click_dialogOK)],
-    )
+    dialog = ft.AlertDialog(title=None, content=ft.Text(""), actions=None, modal=True ) # modal:閉じれないように
 
     ### layout
     page.overlay.append(picker)  # オーバーレイにファイルピッカーを追加

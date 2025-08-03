@@ -47,7 +47,7 @@ def generate (argv:list[str]) -> tuple[bool, str]:
                             print(f"Failed to decode image {img_path}. Skipping...")
                             num_skipped += 1
                             continue
-                        img = libs.color_replace(img, consts.COLOR_PAIR_LIST)
+                        img = libs.color_replace(img)
                         # 画像ファイルとして出力
                         dst_zip.writestr(img_path, cv2.imencode('.png', img)[1].tobytes())
                         num_success += 1
