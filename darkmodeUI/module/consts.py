@@ -15,9 +15,11 @@ ASSET_PATH_LIST = [ # Minecraft 1.21.8 のパス
     "assets/minecraft/textures/gui/sprites/toast/**/*.png",
 ]
 
+
+bright_rate = 0.5 # グレーの明るさを 0.5 倍にする
 # グレースケール画像に対して適用する置換関数 : int -> int
-REPLACE_GRAY_FUNC = lambda bright : bright * 2 // 5 # グレーの明るさを2/5にする
+REPLACE_GRAY_FUNC = lambda bright : bright * bright_rate
 # 不透過カラー画像に対して適用する置換関数 : [int*3] -> [int*3]
-REPLACE_RGB_FUNC = lambda rgb : rgb * 2 // 5 if rgb[0] == rgb[1] == rgb[2] else rgb
+REPLACE_RGB_FUNC = lambda rgb : rgb * bright_rate if rgb[0] == rgb[1] == rgb[2] else rgb
 # 透過カラー画像に対して適用する置換関数 : [int*4] -> [int*4]
-REPLACE_RGBA_FUNC = lambda rgba : [*(rgba[:3] * 2 // 5), rgba[3]] if rgba[0] == rgba[1] == rgba[2] else rgba
+REPLACE_RGBA_FUNC = lambda rgba : [*(rgba[:3] * bright_rate), rgba[3]] if rgba[0] == rgba[1] == rgba[2] else rgba
