@@ -89,7 +89,7 @@ def main(page: ft.Page):
     button_generate = ft.ElevatedButton("Generate!", on_click=on_click_generate, disabled=True)
     ### overlays
     picker = ft.FilePicker(on_result=on_picker_result, data=pickerstate)
-    dialog = ft.AlertDialog(title=None, content=ft.Text(""), actions=None, modal=True ) # modal:閉じれないように
+    dialog = ft.AlertDialog(title=None, content=ft.Text(""), actions=None, modal=True, ) # modal:閉じれないように
 
     ### layout
     page.overlay.append(picker)  # オーバーレイにファイルピッカーを追加

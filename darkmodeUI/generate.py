@@ -33,7 +33,7 @@ def generate (argv:list[str]) -> tuple[bool, str]:
             with zipfile.ZipFile(jar_path, "r") as src_zip: # Minecraftのjarファイルを開く
                 # pack.mcmeta, pack.pngの追加
                 dst_zip.writestr("pack.mcmeta", libs.get_pack_meta(src_zip))
-                dst_zip.writestr("pack.png", src_zip.read("pack.png")) # デフォルトのpack.pngをコピー
+                dst_zip.writestr("pack.png", libs.create_pack_png(src_zip.read("pack.png"))) # pack.pngを作成
 
                 # テクスチャの置換, 追加
                 img_on_zip_list = libs.get_png_path_list(src_zip)
