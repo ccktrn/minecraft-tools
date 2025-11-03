@@ -74,8 +74,8 @@ def get_pack_meta(zip_file : zipfile.ZipFile) -> str:
     })
 
 # Minecraftのjarファイルのパスを取得する関数
-def get_jar_path(version: str, mc_path: str) -> Path:
-    jar_path = Path(mc_path).resolve() / "versions" / version / f"{version}.jar"
+def get_jar_path(version: str, mc_path: str | None) -> Path:
+    jar_path = Path(mc_path if mc_path else get_default_mc_dir()).resolve() / "versions" / version / f"{version}.jar"
     if not jar_path.exists():
         raise FileNotFoundError(f"{version}.jar not found in {str(jar_path.parent)}")
     return jar_path
@@ -94,14 +94,18 @@ def _is_match_path(path: str, patterns: list[str]) -> bool:
     return False
 
 # シェルスタイルのワイルドカードパターンを正規表現に変換する関数
-def _convert_shellpattern_to_regex(pattern: str) -> str:
+def _convert_shellpattern_to_regex(pattern: str, tmpletter:str = '＠') -> str:
     # minecraftのパスなので＠(全角)がないこと前提
-    pattern = pattern.replace('*', '＠') # いったん置き換え
+    pattern = pattern.replace('*', tmpletter) # いったん置き換え
     pattern = pattern.replace('.', r'\.') # Escape dots
     pattern = pattern.replace('?', '.') 
-    pattern = pattern.replace('/＠＠', '(/.*)?') # 
-    pattern = pattern.replace('＠', '[^/]*') #
+    pattern = pattern.replace(f'/{tmpletter}{tmpletter}', '(/.*)?') # 
+    pattern = pattern.replace(tmpletter, '[^/]*') #
     return f'^{pattern}$'
+
+
+
+##### 
 
 # 一枚の画像に対して色置換を行った画像データを返す関数
 def color_replace(img : cv2.Mat | np.ndarray) -> cv2.Mat | np.ndarray: 

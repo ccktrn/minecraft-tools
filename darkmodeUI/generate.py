@@ -12,23 +12,14 @@ import module.libs as libs
 
 
 #---main-----
-def generate (argv:list[str]) -> tuple[bool, str]:
+def generate (
+    mc_ver: str,
+    output_zip_path: str | None,
+    minecraft_dir_path: str | None
+) -> tuple[bool, str]:
     try:
-        res = None
-        if len(argv) <= 1:
-            print("Usage:")
-            print("\t> main.py <mc_version> [<output_zip_path> <.minecraft_dir_path>]")
-            print("Args:")
-            print("\t<mc_version>: Minecraft version (e.g., 1.20.1)")
-            print("\t<output_zip_path>: Path to the output zip file (default: <current directory>/darkmodeUI_<mc_version>.zip)")
-            print("\t<.minecraft_dir_path>: Path to the .minecraft directory (default: %APPDATA%\\.minecraft)")
-            print("Example:")
-            print("\t main.py 1.20.2 dist/MyPack.zip")
-            res = (False, "Invalid arguments. Please check the usage.")
-            return res
-        mc_ver = argv[1]
-        pack_path = libs.get_pack_path(mc_ver, argv[2] if len(argv) > 2 else None)
-        jar_path = libs.get_jar_path(mc_ver, argv[3] if len(argv) > 3 else libs.get_default_mc_dir())
+        pack_path = libs.get_pack_path(mc_ver, output_zip_path)
+        jar_path = libs.get_jar_path(mc_ver, minecraft_dir_path)
         with zipfile.ZipFile(pack_path, "w") as dst_zip: # 出力先のzipファイルを開く
             with zipfile.ZipFile(jar_path, "r") as src_zip: # Minecraftのjarファイルを開く
                 # pack.mcmeta, pack.pngの追加
@@ -61,4 +52,10 @@ def generate (argv:list[str]) -> tuple[bool, str]:
         return (False, str(e))
 
 if __name__ == "__main__":
-    generate(sys.argv)
+    mc_ver = sys.argv[1] if len(sys.argv) > 1 else None
+    output_zip_path = sys.argv[2] if len(sys.argv) > 2 else None
+    minecraft_dir_path = sys.argv[3] if len(sys.argv) > 3 else None
+    if not mc_ver:
+        print("Minecraft version is required.")
+        sys.exit(1)
+    generate(mc_ver=mc_ver, output_zip_path=output_zip_path, minecraft_dir_path=minecraft_dir_path)

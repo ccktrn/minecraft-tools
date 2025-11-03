@@ -27,8 +27,15 @@ def main(page: ft.Page):
 
 
     ### state
-    pagestate = {"version": "", "outpath": "", "mcdir": ""}  # 入力値の状態
-    pickerstate = {"mode": PickerMode.OUT}  # ファイルピッカーの状態
+    pagestate = {
+        "version": "1.21.8", 
+        "outpath": "", 
+        "mcdir": ""
+    }  # 入力値の状態(初期値)
+    pickerstate = {
+        "mode": PickerMode.OUT,
+        "index": 0
+    }  # ファイルピッカーの状態
 
     ### actions
     # inputs
@@ -62,17 +69,17 @@ def main(page: ft.Page):
         if e.control.data["mode"] == PickerMode.OUT:
             pagestate["outpath"] = e.path
             if pagestate["version"].strip() == "" or pagestate["outpath"].strip() == "" : return
-            arg = ["generate.py", pagestate["version"], pagestate["outpath"]]
-            if not pagestate["mcdir"].strip() == "":
-                arg.append(pagestate["mcdir"]) 
-            print(f"Generating with args: {arg}")
             # loading open
             dialog.open = True  # ダイアログを開く
             dialog.title = None  # ダイアログのタイトル
             dialog.content = ft.Row([ ft.ProgressRing(), ft.Text("Generating...")], alignment=ft.MainAxisAlignment.SPACE_AROUND)  # 結果をダイアログに表示
             dialog.actions = None  # ボタンはなし
             dialog.update()
-            res = generate.generate(arg)  # 引数を渡して生成
+            res = generate.generate(
+                mc_ver= pagestate["version"],
+                output_zip_path= pagestate["outpath"] if pagestate["outpath"] != "" else None,
+                minecraft_dir_path= pagestate["mcdir"] if pagestate["mcdir"] != "" else None,
+            )  # 引数を渡して生成
             dialog.title = "Result: successed" if res[0] else "Result: failed"  # ダイアログのタイトル
             dialog.content = ft.Text(res[1])  # 結果をダイアログに表示
             dialog.actions = [ft.TextButton("OK", on_click=_on_click_dialogOK)]  # OKボタンを追加
@@ -89,7 +96,7 @@ def main(page: ft.Page):
     ### buttons
     button_pick_mcdir = ft.IconButton(ft.Icons.FOLDER_OPEN, on_click=on_click_mcdir_pick)
     button_cancel = ft.ElevatedButton("Cancel", on_click=on_click_cancel)
-    button_generate = ft.ElevatedButton("Generate!", on_click=on_click_generate, disabled=True)
+    button_generate = ft.ElevatedButton("Generate!", on_click=on_click_generate, disabled=False)
     ### overlays
     picker = ft.FilePicker(on_result=on_picker_result, data=pickerstate)
     dialog = ft.AlertDialog(title=None, content=ft.Text(""), actions=None, modal=True, ) # modal:閉じれないように
