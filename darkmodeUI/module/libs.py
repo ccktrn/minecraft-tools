@@ -60,18 +60,26 @@ def get_pack_meta(zip_file : zipfile.ZipFile) -> str:
         raise FileNotFoundError("version.json not found in the zip file")
     version_info = json.loads(data)
 
+    
+
     version = version_info.get("id", "unknown")
-    pack_format = version_info.get("pack_version", {}).get("resource", 15)
-    return json.dumps({
+    pack_vers = version_info.get("pack_version", {})
+    pack_format = pack_vers.get("resource", -1)
+    min_format = pack_vers.get("min_format", -1)
+    max_format = pack_vers.get("max_format", -1)
+
+    data = {
         "pack": {
-            "pack_format": pack_format, 
-            "supported_formats": {
-                "min_inclusive": 15,
-                "max_inclusive": 255
-            },
             "description": f"Dark Mode UI for Minecraft {version}"
         }
-    })
+    }
+    if pack_format != -1:
+        data["pack"]["pack_format"] = pack_format
+    if min_format != -1:
+        data["pack"]["min_format"] = min_format
+    if max_format != -1:
+        data["pack"]["max_format"] = max_format
+    return json.dumps(data)
 
 # Minecraftのjarファイルのパスを取得する関数
 def get_jar_path(version: str, mc_path: str | None) -> Path:
