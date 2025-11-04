@@ -65,8 +65,8 @@ def get_pack_meta(zip_file : zipfile.ZipFile) -> str:
     version = version_info.get("id", "unknown")
     pack_vers = version_info.get("pack_version", {})
     pack_format = pack_vers.get("resource", -1)
-    min_format = pack_vers.get("min_format", -1)
-    max_format = pack_vers.get("max_format", -1)
+    major = pack_vers.get("resource_major", -1)
+    minor = pack_vers.get("resource_minor", -1)
 
     data = {
         "pack": {
@@ -75,10 +75,9 @@ def get_pack_meta(zip_file : zipfile.ZipFile) -> str:
     }
     if pack_format != -1:
         data["pack"]["pack_format"] = pack_format
-    if min_format != -1:
-        data["pack"]["min_format"] = min_format
-    if max_format != -1:
-        data["pack"]["max_format"] = max_format
+    if major != -1:
+        data["pack"]["min_format"] = major 
+        data["pack"]["max_format"] = major + 10
     return json.dumps(data)
 
 # Minecraftのjarファイルのパスを取得する関数
